@@ -17,6 +17,8 @@ const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 // const { serialize } = require("v8");
 
+
+
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlustt";
 
 main()
@@ -69,6 +71,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
      res.locals.error = req.flash("error");
+     res.locals.currUser = req.user;
     next();
 });     
 

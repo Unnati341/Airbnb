@@ -4,30 +4,59 @@
 
 
     <h3>edit your Listing</h3>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT"
-        novalidate class="needs-validation">
-         
+    <!-- <form method="POST" action="/listings/?_method=PUT"
+        novalidate class="needs-validation"
+        enctype="multipart/form-data">
+          -->
+
+          <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+  
+
         <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-        <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required/>
+            <label for="title" 
+            class="form-label">Title</label>
+        <!-- <input name="listing[title]" 
+        value="" 
+        type="text" 
+        class="form-control" 
+        required/> -->
+
+          <input type="text" name="listing[title]" value="<%= listing.title %>" />
+
         <div class="valid-feedback"> Title Looks Godd </div>
        
     </div>
 
        <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-       <textarea name="listing[description]"class="form-control" required><%= listing.description%></textarea>
+       <textarea name="listing[description]"
+       class="form-control" required>
+       <%= listing.description%></textarea>
+       
        <div class="invalid-feedback"> Please enter the short Description</div>
       </div>
 
        
-<div class="mb-3">
-        <label for="image[url]" class="form-label">Image Link</label>
+<!-- <div class="mb-3">
+        <label for="image" class="form-label">Image Link</label>
         
-     <input name="listing[image][url]" value="<%=listing.image.url%>" type="text" class="form-control" required/> 
+     <input name="image" 
+     type="file" 
+     class="form-control" 
+     /> 
+      
      <div class="invalid-feedback">Please enter a valid link</div>  
 
- </div>
+ </div> -->
+  <div class="mb-3">
+        <label for="image" class="form-label">Image Link</label>
+
+<input type="file" name="image" class="form-control" />
+
+<input type="hidden" name="existingImage" value="<%= listing.image.url %>" />
+<img src="<%= listing.image.url %>" width="120px" />
+</div>
+
 
   
      <div class="row">

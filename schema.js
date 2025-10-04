@@ -46,6 +46,9 @@ const listingSchema = Joi.object({
       url: Joi.string().allow("", null),
       filename: Joi.string(),
     }).optional(),
+
+    existingImage: Joi.string().optional(),
+
   }).required(),
 });
 

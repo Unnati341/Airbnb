@@ -32,7 +32,7 @@ router.route("/:id")
 .put(
    isLoggedIn,
    isOwner,
-   upload.single("imapge"),
+   upload.single("image"),
    validateListing,
     wrapAsync(listingController.updateListing))
 

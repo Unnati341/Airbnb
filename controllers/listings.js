@@ -59,6 +59,8 @@ module.exports.createListing = async (req, res, next) => {
   req.flash("success", "New Listing Created!");
   res.redirect("/listings");
 };
+
+
 module.exports.renderEditForm = async(req, res,next) =>{
 let {id} = req.params;
  const listing = await Listing.findById(id);
@@ -66,7 +68,10 @@ let {id} = req.params;
     req.flash("error", "Listing you requested for dose not exist!");
     return res.redirect("/listings");
  }
- res.render("listings/edit.ejs",{ listing });
+
+ let orignalImageUrl = listing.image.url;
+ orignalImageUrl= orignalImageUrl.replace("/upload", ".upload/h_300,w_250");
+ res.render("listings/edit.ejs",{ listing, orignalImageUrl });
 };
 
 // module.exports.updateListing = async(req, res) => {
@@ -114,9 +119,45 @@ let {id} = req.params;
 //   res.redirect(`/listings/${listing._id}`);
 // };
 
+// module.exports.updateListing = async (req, res) => {
+//   const { id } = req.params;
+//   const listing = await Listing.findById(id);
+
+//   listing.title = req.body.listing.title;
+//   listing.description = req.body.listing.description;
+//   listing.price = req.body.listing.price;
+//   listing.location = req.body.listing.location;
+//   listing.country = req.body.listing.country;
+
+//   if (req.file) {
+//     listing.image = {
+//       url: req.file.path,
+//       filename: req.file.filename
+//     };
+//   } else if (req.body.existingImage) {
+//     listing.image = {
+//       url: req.body.existingImage,
+//       filename: listing.image.filename
+//     };
+//   } else {
+//     req.flash("error", "Image is required.");
+//     return res.redirect(`/listings/${id}/edit`);
+//   }
+
+//   await listing.save();
+//   req.flash("success", "Listing updated!");
+//   res.redirect(`/listings/${listing._id}`);
+//};
+
+//chat gpt
 module.exports.updateListing = async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
+
+  const imageFilename = req.file ? req.file.filename : req.body.existingImage;
+  const imageUrl = req.file
+    ? req.file.path     // ya aap Cloudinary use kar rahe ho to req.file.path
+    : listing.image.url;
 
   listing.title = req.body.listing.title;
   listing.description = req.body.listing.description;
@@ -124,23 +165,12 @@ module.exports.updateListing = async (req, res) => {
   listing.location = req.body.listing.location;
   listing.country = req.body.listing.country;
 
-  if (req.file) {
-    listing.image = {
-      url: req.file.path,
-      filename: req.file.filename
-    };
-  } else if (req.body.existingImage) {
-    listing.image = {
-      url: req.body.existingImage,
-      filename: listing.image.filename
-    };
-  } else {
-    req.flash("error", "Image is required.");
-    return res.redirect(`/listings/${id}/edit`);
-  }
+  listing.image = {
+    filename: imageFilename,
+    url: imageUrl
+  };
 
   await listing.save();
-  req.flash("success", "Listing updated!");
   res.redirect(`/listings/${listing._id}`);
 };
 

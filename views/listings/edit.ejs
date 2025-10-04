@@ -48,13 +48,18 @@
      <div class="invalid-feedback">Please enter a valid link</div>  
 
  </div> -->
+<div class="mb-3">
+ <input type="hidden" name="listing[existingImage]" value="<%= listing.image.filename %>" />
+Orignal Listing Image<br/>
+<img src="<%= listing.image.url %>" width="120px" />
+</div>
+
   <div class="mb-3">
-        <label for="image" class="form-label">Image Link</label>
+        <label for="image" class="form-label">Upload New image</label>
 
 <input type="file" name="image" class="form-control" />
 
-<input type="hidden" name="existingImage" value="<%= listing.image.url %>" />
-<img src="<%= listing.image.url %>" width="120px" />
+
 </div>
 
 
